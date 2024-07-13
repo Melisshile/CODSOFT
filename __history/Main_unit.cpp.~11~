@@ -1,0 +1,73 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Main_unit.h"
+//---------------------------------------------------------------------------
+//importing libraries for generating random numbres
+#include <ctime>
+#include <cstdlib>
+//---------------------------------------------------------------------------
+//global variables
+static int x=0;
+int guess;
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TMain_Form *Main_Form;
+//---------------------------------------------------------------------------
+__fastcall TMain_Form::TMain_Form(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void TMain_Form::randomNumber()
+{
+    srand(time(NULL));
+	x = rand() % 5 + 1; //ranging from 1 to 5
+    return;
+}
+//---------------------------------------------------------------------------
+void TMain_Form::decision()
+{
+    guess = StrToInt(guess_edit->Text);
+    //decision part
+	if(guess==x)
+	{
+		ShowMessage("Congratulations!!! \nYou got it!");
+		results_panel->Caption = "Congratulations!!! You got it!";
+		//displaying the guess
+		dis_guess_lbl->Caption = IntToStr(x);
+	}else if(guess>x && guess<x+2)
+	{
+		ShowMessage("You're almost there!!! \nKeep on trying!");
+	}else if(guess>x+2)
+	{
+		ShowMessage("Your guess is too high!!! \nKeep on trying!");
+	}else if(guess<x && guess>=x-2)
+	{
+		ShowMessage("You're almost there!!! \nKeep on trying!");
+	}else if(guess<x-2)
+	{
+		ShowMessage("Your guess is too low!!! \nKeep on trying!");
+	}else
+	{
+		ShowMessage("Invalid Input!!!");
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMain_Form::FormCreate(TObject *Sender)
+{
+	guess_edit->SetFocus();
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TMain_Form::Run_btnClick(TObject *Sender)
+{
+	//calling randomNumber function
+	randomNumber();
+	//calling decision function
+    decision();
+}
+//---------------------------------------------------------------------------
